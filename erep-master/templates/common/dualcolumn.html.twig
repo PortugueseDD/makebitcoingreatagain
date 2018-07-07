@@ -1,0 +1,77 @@
+{% block dualColumn %}
+    <div id="wrapper">
+        <div id="left-column">
+            <h2>eRepublik</h2>
+            <div id="left-menu">
+                <div class="profile-section">
+                    <div style="flex: 0 0 20%;">
+                        <img class="avatar" src="/img/default_avatar.jpg">
+                    </div>
+                    <div  style="flex: 0 0 81%;">
+                        <a href=""><strong>{{ my.nick }}</strong></a>
+                        <br>
+                        <br>
+                        <button><i class="fa fa-envelope-o"></i></button>
+                        <button><i class="fa fa-bell-o"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                            <img class="icon small" src="/img/flags/{{ my.location.country.id }}.png"> {{my.location.country.name}}, {{ my.location.name}}
+                        </li>
+                        <li>
+                            <img class="icon small" src="/img/icons/gold.png"> Gold: {{ my.money.gold }}
+                        </li>
+                        <li>
+                            <img class="icon small"src="/img/flags/{{ my.location.country.id }}.png"> {% filter upper %}{{ my.location.country.currency }}{% endfilter %} {{ my.money[my.location.country.currency] }}
+                        </li>
+                        <li>
+                            <progress id="max-health" value="70" max="100" style="position: absolute;"></progress>
+                            <progress value="40" max="100" style="position: absolute;    background: transparent;"></progress>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="right-column">
+            <div id="header">
+                <ul id="top-menu" class="dropdown">
+                    <li><a href="{{ path_for('home') }}"><i class="fa fa-home"></i> {% trans %}Home{% endtrans %}</a></li>
+                    <li>
+                        <i class="fa fa-flag-o"></i> {% trans %}My Places{% endtrans %}
+                        <ul>
+                            <li><a href="{{ path_for('myCompanies') }}">{% trans %}Companies{% endtrans %}</a></li>
+                            <li><a href="{{ path_for('gyms') }}">{% trans %}Training grounds{% endtrans %}</a></li>
+                            <li><a href="{{ path_for('storage') }}">{% trans %}Storage{% endtrans %}</a></li>
+                            <li><a href="#">{% trans %}Change location{% endtrans %}</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ path_for('wars') }}"><i class="fa fa-crosshairs"></i> {% trans %}Wars{% endtrans %}</a></li>
+                    <li>
+                        <i class="fa fa-shopping-cart"></i> {% trans %}Market{% endtrans %}
+                        <ul>
+                            <li><a href="{{ path_for('marketplace') }}">{% trans %}Marketplace{% endtrans %}</a></li>
+                            <li><a href="{{ path_for('workOffers') }}">{% trans %}Job market{% endtrans %}</a></li>
+                            <li><a href="#">{% trans %}Monetary market{% endtrans %}</a></li>
+                            <li><a href="#">{% trans %}Companies for sale{% endtrans %}</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <i class="fa fa-users"></i> {% trans %}Community{% endtrans %}
+                        <ul>
+                            <li><a href="{{ path_for('partyList') }}">{% trans %}Political parties{% endtrans %}</a></li>
+                            <li><a href="{{ path_for('congressHome') }}">{% trans %}Congress{% endtrans %}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <a class="logout-link" href="{{ path_for('logout') }}"><i class="fa fa-power-off"></i> {% trans %}Logout{% endtrans %}</a>
+            </div>
+            <div id="main-container">
+                {{ block('content') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

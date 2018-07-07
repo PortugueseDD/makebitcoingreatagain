@@ -1,0 +1,43 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+
+    {% include 'widgets/countrySelector.html.twig' %}
+
+    {% if offers|length > 0 %}
+        <table id="item-results">
+            <thead>
+            <tr>
+                <th>{% trans %}Product{% endtrans %}</th>
+                <th>{% trans %}Seller{% endtrans %}</th>
+                <th>{% trans %}Supply{% endtrans %}</th>
+                <th>{% trans %}Price{% endtrans %}</th>
+                <th>{% trans %}Buy quantity{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offer in offers %}
+                <tr id="offer-{{ offer.id }}">
+                    <td>
+                        <img src="/img/products/{{ offer.item }}.png">
+                    </td>
+                    <td><a href="#">{{ offer.seller.nick }}</a></td>
+                    <td>{{ offer.quantity }}</td>
+                    <td><strong>{{ offer.price }}</strong> {% filter upper %}{{ offer.country.currency }}{% endfilter %}</td>
+                    <td><input name="quantity" type="number" value="1"><button data-action="buy-item" data-id="{{ offer.id }}">{% trans %}Buy{% endtrans %}</button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% trans %}No offers available in this country{% endtrans %}
+    {% endif %}
+{% endblock %}
+
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.market.initResultsList();
+        });
+    </script>
+{% endblock %}

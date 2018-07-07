@@ -1,0 +1,39 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+
+    <h1>Marketplace</h1>
+
+    {% include 'widgets/countrySelector.html.twig' %}
+
+    {% for product in products %}
+        <button data-action="show-product-catalogue" data-id="{{ product.id }}">
+            <img src="/img/products/{{ product.id }}.png"><br>
+            {{ product.name }}
+        </button>
+    {% endfor %}
+
+    <div id="product-catalogue" style="display: none">
+        <h2>Select quality</h2>
+        <ul>
+
+        </ul>
+    </div>
+
+    <template id="tpl-item-quality">
+        <li>
+            <a href="{{ path_for('marketplace') }}/">
+                <img src="">
+                <span></span>
+            </a>
+        </li>
+    </template>
+{% endblock %}
+
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.market.initHome({{ products|json_encode()|raw }});
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+    <div>
+        <center><h1>¡Welcome to this temporal home!</h1></center>
+        {% if not hasTrainedToday %}
+            <div>
+                ¡You haven't trained yet!
+                <a class="button" href="{{ path_for('gyms') }}">Train</a>
+            </div>
+        {% endif %}
+        <br>
+        {% if job.hasJob %}
+            {% if not job.hasWorkedToday %}
+                <a class="button" href="#">¡Time to work mate!</a>
+            {% endif %}
+        {% else %}
+            <div>
+                You are unemployed
+                <a class="button" href="{{ path_for('workOffers') }}">¡Find a job!</a>
+            </div>
+        {% endif %}
+
+        <div>
+            <div>
+                <h2>Latest news</h2>
+            </div>
+            <div>
+                {% if latestArticles|length > 0 %}
+                    {% for article in latestArticles %}
+                        <div>
+                            <div class="vote-container">
+                                <h1>{{ article.votes }}</h1>
+                            </div>
+                            <a href="{{ path_for('showArticle', {id: article.id}) }}">
+                                {{ article.title }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No news available. <a href="{{ path_for('createNewspaper') }}">¡Create your own newspaper!</a></p>
+                {% endif %}
+            </div>
+        </div>
+        <div id="chat-container">
+            <div>
+                <h2>Chat</h2>
+                <ul id="chat-channels">
+                    <li data-channel="1">World</li>
+                    <li data-channel="2">{{ my.location.country.name}}</li>
+                    {% if hasPoliticalParty %}
+                        <li data-channel="3">Political party</li>
+                    {% endif %}
+                    {% if hasMilitia %}
+                        <li data-channel="4">Militia</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div>
+                <div class="textarea-container">
+                    <textarea name="message"></textarea>
+                    <button data-action="post">Send</button>
+                </div>
+                <div id="chat-messages-container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <template id="tpl-chat-message">
+        <div class="chat-message">
+            <div class="avatar-container">
+                <img class="avatar" src="/img/default_avatar.jpg">
+            </div>
+            <div class="message-body">
+                <strong></strong>
+                <div data-id="message"></div>
+            </div>
+            <span data-id="likes-count">0</span> Likes - <span><span data-id="replies-count">0</span> Replies</span>
+        </div>
+    </template>
+{% endblock %}
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.chat.init(2);
+        });
+    </script>
+{% endblock %}

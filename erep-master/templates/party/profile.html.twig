@@ -1,0 +1,29 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+    <h1>{{ party.name }}</h1>
+    <div id="party-profile" data-id="{{ party.id }}">
+
+    </div>
+    <p>{{ party.description }}</p>
+    {% if party.affiliation %}
+        <button data-action="leave-party">Leave party</button>
+    {% else %}
+        <button data-action="join-party">Join party</button>
+    {% endif %}
+
+    <div>
+        <h2>Congress</h2>
+
+        {% if party.affiliation %}
+            <button data-action="congress-apply">Run for congress</button>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.party.init();
+        });
+    </script>
+{% endblock %}

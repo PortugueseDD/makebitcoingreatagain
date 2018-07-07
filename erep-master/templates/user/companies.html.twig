@@ -1,0 +1,72 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+    <h1>My work</h1>
+    {% if job.hasJob %}
+        {% if not job.hasWorkedToday %}
+           <button>Work</button>
+        {% endif %}
+    {% else %}
+        You are unemployed
+        <a href="{{ path_for('workOffers') }}">¡Find a job!</a><br>
+    {% endif %}
+    <h1 style="display: inline-block;">My companies</h1>
+    <a href="{{ path_for('createCompany') }}" class="button">Create a new company</a>
+    {% if companies|length > 0 %}
+    <table id="my-companies" class="align-images">
+        <tr>
+            <th></th>
+            <th><label><input type="checkbox" data-action="check-all">Work as manager</label></th>
+            <th>Employees</th>
+            <th><a href="">+</a> Consumes</th>
+            <th>Final product</th>
+        </tr>
+    {% for company in companies %}
+        <tr>
+            <td><img src="/img/companies/{{ company.type }}.png"> {{ companyTypes[company.type].name }} {{ company.quality }}</td>
+            <td><input type="checkbox" data-company="{{ company.id }}" {% if company.hasManagerWorkedToday %}disabled checked{% endif %}></td>
+            <td>{{ companyTypes[company.type].qualities[company.quality].workers }}</td>
+            <td class="red">
+                {% if companyTypes[company.type].qualities[company.quality].consume_product > 0 %}
+                -{{ companyTypes[company.type].qualities[company.quality].consume_amount }} <img class="icon medium" src="/img/products/{{ companyTypes[company.type].qualities[company.quality].consume_product }}.png">
+                {% endif %}
+            </td>
+            <td class="green">+{{ companyTypes[company.type].qualities[company.quality].product_amount }} <img class="icon medium" src="/img/products/{{ companyTypes[company.type].product }}.png"></td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div>
+        <div style="display: inline-block;width: 40%;">
+            {# ToDo #}
+            <div style="display: none">
+                Produced raw:<br>
+                <ul>
+                    <li data-product="1"><img class="icon small" src="/img/products/1.png"> 0</li>
+                    <li data-product="2"><img class="icon small" src="/img/products/2.png"> 0</li>
+                    <li data-product="3"><img class="icon small" src="/img/products/3.png"> 0</li>
+                </ul>
+            </div>
+        </div>
+        <div style="display: inline-block">
+            <button data-action="work-as-manager">Start production</button>
+        </div>
+    </div>
+    {% else %}
+        <h3>¡You don't have any!</h3>
+        <a href="{{ path_for('createCompany') }}">Create a new company</a>
+    {% endif %}
+<template id="tpl-work-result">
+<div class="work-result">
+    <img src=""><br>
+    <span data-id="quantity"></span>
+</div>
+</template>
+{% endblock %}
+
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.company.init();
+        });
+    </script>
+{% endblock %}

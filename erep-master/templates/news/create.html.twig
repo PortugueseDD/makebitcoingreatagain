@@ -1,0 +1,31 @@
+{% extends isAjax ? "common/ajaxbase.html.twig" : "common/base.html.twig" %}
+
+{% block content %}
+    <h1>Write article</h1>
+
+    <form id="article-creation-form" method="post">
+        <label>Title: <input name="title" type="text" required></label>
+
+        <label>
+            Category:
+            <select name="category">
+                {# If you edit this, edit Models/NewspaperArticle too #}
+                <option value="1">War</option>
+                <option value="2">Economics</option>
+                <option value="3">Social</option>
+            </select>
+        </label>
+
+        <textarea name="text" style="height: 70vh;"></textarea>
+
+        <button>Publish</button>
+    </form>
+{% endblock %}
+
+{% block bottomJS %}
+    <script>
+        $(function () {
+            peque.news.initArticleForm();
+        });
+    </script>
+{% endblock %}
